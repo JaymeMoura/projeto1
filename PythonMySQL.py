@@ -22,7 +22,11 @@ def lerProdutos():
     comando = 'SELECT * FROM pythonmysql.vendas;'
     cursor.execute(comando)
     resultado = cursor.fetchall()#ler o banco de dados
-    print (resultado)
+    print('produtos disponiveis:')
+    for row in resultado:
+        print('id:', row[0])
+        print('nome:', row[1])
+        print('Valor',row[2],'\n')
 
 #Update
 def atualizarNome():
@@ -69,7 +73,6 @@ num = int( input('digite o que deseja realizar:\n'
             '4) Deletar o produto\n'))
 
 print('\n')
-
 if num == 1:
     criarProduto()
 elif num == 2:
