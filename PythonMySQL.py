@@ -1,4 +1,5 @@
 import mysql.connector
+import customtkinter
 
 conexao = mysql.connector.connect(
     host='localhost',
@@ -7,7 +8,6 @@ conexao = mysql.connector.connect(
     database='pythonmysql',
 )
 cursor = conexao.cursor()
-
 
 
 # Create
@@ -28,7 +28,7 @@ def lerProdutos():
     comando = 'SELECT * FROM pythonmysql.vendas;'
     cursor.execute(comando)
     resultado = cursor.fetchall()  # ler o banco de dados
-    print('produtos disponiveis:')
+    print('produtos disponiveis:\n')
     for row in resultado:
         print('id:', row[0])
         print('nome:', row[1])
@@ -45,8 +45,9 @@ def atualizarNome():
     for row in resultado:
 
         print(row[0])
-    
-    Nome_produto = input('\nDigite o nome do produto que voce quer atualizar: ')
+
+    Nome_produto = input(
+        '\nDigite o nome do produto que voce quer atualizar: ')
 
     novo_nome_produto = input('Digite o novo nome: ')
 
@@ -63,8 +64,7 @@ def atualizarValor():
     print('existe ', len(resultado), 'itens que podem ser Atualizados:')
     for row in resultado:
 
-        print(row[0],'----valor:', row[1] )
-
+        print(row[0], '----valor:', row[1])
 
     Nome_produto = input('Digite o nome do produto que voce quer atualizar:')
     novo_Valor = input(f'Digite o novo valor do produto {Nome_produto}:')
@@ -94,7 +94,7 @@ def deletarProduto():
     print(resultado)
 
 
-#Interface::
+# Interface::
 
 def funcional():
     num = int(input('digite o que deseja realizar:\n'
@@ -109,7 +109,7 @@ def funcional():
         lerProdutos()
     elif num == 3:
         cont = int(input('\nDigite:\n 1) para alterar o nome do produto\n'
-                    ' 2) para alterar valor do produto\n'))
+                         ' 2) para alterar valor do produto\n'))
         if cont == 1:
             atualizarNome()
         elif cont == 2:
@@ -118,28 +118,44 @@ def funcional():
             print('o mumero invalido')
     elif num == 4:
         deletarProduto()
-    else: 
+    else:
         print('numero invalido')
 
     num = int(input('\ndeseja realizar mais uma pesquisa:\n'
-                '1) Sim\n'
-                '2) Não\n'))
+                    '1) Sim\n'
+                    '2) Não\n'))
     print('\n')
     if num == 1:
         funcional()
-
 
     else:
         cursor.close()
         conexao.close()
 
 
-funcional()
+janela = customtkinter.CTk()
+janela.geometry("600x300")
+janela.title("CRUD")
+
+janela.grid_columnconfigure(1, weight=10)
+
+texto = customtkinter.CTkLabel(janela, text='O que deseja realizar na tabela?')
+texto.grid(row=0, column=2, padx=1, pady=1, sticky="ew")
+
+criar = customtkinter.CTkButton(janela, text='CRIAR')
+criar.grid(row=1, column=0, padx=1, pady=1)
+
+visualisar = customtkinter.CTkButton(janela, text='VISUALIZAR')
+visualisar.grid(row=1, column=1, padx=1, pady=1)
+
+atualizar = customtkinter.CTkButton(janela, text='ATUALIZAR')
+atualizar.grid(row=1, column=2, padx=1, pady=1)
+
+deletar = customtkinter.CTkButton(janela, text='DELETAR')
+deletar.grid(row=1, column=3, padx=1, pady=1)
 
 
 
-
-
+janela.mainloop()
 cursor.close()
 conexao.close()
-
